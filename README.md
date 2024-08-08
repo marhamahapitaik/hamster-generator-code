@@ -1,5 +1,8 @@
 # Hamster Kombat Promo Code Generator
 
+![image](https://github.com/user-attachments/assets/2c32eccc-7173-42b6-967d-8489756edcc5)
+
+
 A script for generating promo codes using the GamePromo API. This tool supports multiple games and proxies, and it displays progress in a visually appealing manner.
 
 [TELEGRAM CHANNEL](https://t.me/Deeplchain) | [TWITTER](https://x.com/itsjaw_real)
@@ -55,7 +58,6 @@ This file should be located in the root directory of the project. Here is a samp
 
 ```json
 {
-    "game_choice": 4,
     "key_count": 10,
     "use_proxies": true,
     "games": {
@@ -81,6 +83,7 @@ This file should be located in the root directory of the project. Here is a samp
         }
     }
 }
+
 ```
 Create proxies.txt (if using proxies):
 
