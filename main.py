@@ -21,7 +21,7 @@ htm = Fore.LIGHTBLACK_EX
 EVENTS_DELAY = 20000 / 1000 
 
 def load_config():
-    with open('configs.json', 'r') as file:
+    with open('config.json', 'r') as file:
         return json.load(file)
 
 config = load_config()
