@@ -1,7 +1,7 @@
 {
     "game_choice": 4,
     "key_count": 10,
-    "use_proxies": true,
+    "use_proxies": false,
     "games": {
         "1": {
             "name": "Riding Extreme 3D",
