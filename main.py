@@ -188,7 +188,7 @@ async def main():
             keys = list(filter(None, keys))
 
             if keys:
-                with open('E:/newbot/tele/git/hamsterkombat/promo.txt', 'a') as file:
+                with open('promo.txt', 'a') as file:
                     for key in keys:
                         file.write(f"{key}\n")
 
