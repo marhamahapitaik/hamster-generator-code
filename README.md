@@ -1,0 +1,1 @@
+# hamster-generator-code
