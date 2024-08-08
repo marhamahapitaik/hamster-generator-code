@@ -140,7 +140,7 @@ def sleep(ms):
 def delay_random():
     return random.random() / 3 + 1
 
-def print_progress(iteration, total, prefix='', suffix='', decimals=1, length=50, fill='█'):
+def print_progress(iteration, total, prefix='', suffix='', decimals=1, length=35, fill='█'):
     percent = ("{0:." + str(decimals) + "f}").format(100 * (iteration / float(total)))
     filled_length = int(length * iteration // total)
     bar = fill * filled_length + '-' * (length - filled_length)
@@ -160,7 +160,7 @@ async def generate_key_process(game, key_count, proxies):
     for i in range(11):
         await asyncio.sleep(EVENTS_DELAY * delay_random())
         has_code = await emulate_progress(client_token, game['promoId'], proxies)
-        print_progress(i + 1, 11, prefix='Progress:', suffix='Complete', length=50)
+        print_progress(i + 1, 11, prefix='Progress:', suffix='Complete', length=35)
         if has_code:
             break
 
@@ -175,23 +175,25 @@ async def main():
     _clear()
     _banner()
     log_line()
-    game_choice = config.get('game_choice', 1)
-    key_count = config.get('key_count', 1)
-    game = games[str(game_choice)]
     proxies = load_proxies()
 
     while True:
-        proxy = get_proxy(proxies)
-        keys = await asyncio.gather(*[generate_key_process(game, key_count, proxy) for _ in range(key_count)])
-        keys = list(filter(None, keys))
+        available_games = list(games.values())
+        sample_size = min(10, len(available_games))
+        random_games = random.sample(available_games, sample_size)
 
-        if keys:
-            with open('promo.txt', 'a') as file:
-                for key in keys:
-                    file.write(f"{key}\n")
+        for game in random_games:
+            print(hju + f"Generating {kng}{game['name']} {hju}promo codes...")
+            keys = await asyncio.gather(*[generate_key_process(game, 1, get_proxy(proxies)) for _ in range(10)])
+            keys = list(filter(None, keys))
 
-        print(hju + f"Generated {pth}{len(keys)} promo code's. {hju}Sleeping for a bit before generating more...      ")
-        countdown_timer(10)
+            if keys:
+                with open('E:/newbot/tele/git/hamsterkombat/promo.txt', 'a') as file:
+                    for key in keys:
+                        file.write(f"{key}\n")
+
+            print(hju + f"Generated {pth}{len(keys)} promo code's for {kng}{game['name']}. {hju}Sleeping...        ")
+            countdown_timer(10)
 
 if __name__ == "__main__":
     while True:
@@ -200,4 +202,3 @@ if __name__ == "__main__":
         except KeyboardInterrupt:
             print(mrh + f"\rSuccessfully logged out of the bot\n")
             sys.exit()
-
