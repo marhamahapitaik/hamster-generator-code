@@ -176,14 +176,16 @@ async def main():
     _banner()
     log_line()
     proxies = load_proxies()
+    how_much = config.get('key_count',0)
+    countdown_delay = config.get('countdown_delay', 10)
 
     while True:
         available_games = list(games.values())
-        sample_size = min(10, len(available_games))
+        sample_size = min(how_much, len(available_games))
         random_games = random.sample(available_games, sample_size)
 
         for game in random_games:
-            print(hju + f"Generating {kng}{game['name']} {hju}promo codes...")
+            print(hju + f"Generating {pth}{how_much} {kng}{game['name']} {hju}promo codes...")
             keys = await asyncio.gather(*[generate_key_process(game, 1, get_proxy(proxies)) for _ in range(10)])
             keys = list(filter(None, keys))
 
@@ -193,7 +195,7 @@ async def main():
                         file.write(f"{key}\n")
 
             print(hju + f"Generated {pth}{len(keys)} promo code's for {kng}{game['name']}. {hju}Sleeping...        ")
-            countdown_timer(10)
+            countdown_timer(countdown_delay)
 
 if __name__ == "__main__":
     while True:
