@@ -1,7 +1,7 @@
 {
     "key_count": 11,
     "countdown_delay": 11,
-    "use_proxies": true,
+    "use_proxies": false,
     "games": {
         "1": {
             "name": "Riding Extreme 3D",
