@@ -2,6 +2,8 @@
     "key_count": 11,
     "countdown_delay": 11,
     "use_proxies": false,
+    "random_selection": true,
+    "selected_games": ["2","6"],
     "games": {
         "1": {
             "name": "Riding Extreme 3D",
