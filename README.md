@@ -14,6 +14,14 @@ TDTtTc4hSnK9ii1VDudZij8FVK2ZtwChja - TRON
 UQBy7ICXV6qFGeFTRWSpnMtoH6agYF3PRa5nufcTr3GVOPri - TON
 ```
 
+## Summary ( Latest Update on 08 - 18 - 2024 )
+
+- Fix Random Game Selection
+- Add Multiple Game Selection
+- Add Proxy Sock5 Support
+
+***if `"random_selection": false`, will choose game from `"selected_games": ["2","6"]`, you can add more selections by adding more number. example : `"selected_games": ["2","6","3"]`***
+
 ## Features
 
 - Generate promo codes for various games.
@@ -61,6 +69,8 @@ This file should be located in the root directory of the project. Here is a samp
     "key_count": 11,
     "countdown_delay": 11,
     "use_proxies": false,
+    "random_selection": true,
+    "selected_games": ["2","6"],
     "games": {
         "1": {
             "name": "Riding Extreme 3D",
@@ -94,6 +104,7 @@ This file should be located in the root directory of the project. Here is a samp
         }
     }
 }
+
 ```
 Create proxies.txt (if using proxies):
 
