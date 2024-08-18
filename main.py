@@ -38,14 +38,21 @@ def load_proxies():
             print("proxies.txt not found")
     return proxies
 
-def parse_proxy(proxy_string):
+def parse_proxy(proxy_string, protocol='http'):
     proxy_parts = proxy_string.split('@')
     auth = proxy_parts[0].split(':')
     host_port = proxy_parts[1].split(':')
-    return {
-        'http': f"http://{auth[0]}:{auth[1]}@{host_port[0]}:{host_port[1]}",
-        'https': f"http://{auth[0]}:{auth[1]}@{host_port[0]}:{host_port[1]}"
-    }
+    
+    if protocol.lower() == 'socks5':
+        return {
+            'http': f"socks5://{auth[0]}:{auth[1]}@{host_port[0]}:{host_port[1]}",
+            'https': f"socks5://{auth[0]}:{auth[1]}@{host_port[0]}:{host_port[1]}"
+        }
+    else:
+        return {
+            'http': f"http://{auth[0]}:{auth[1]}@{host_port[0]}:{host_port[1]}",
+            'https': f"http://{auth[0]}:{auth[1]}@{host_port[0]}:{host_port[1]}"
+        }
 
 def get_proxy(proxies):
     if proxies:
@@ -171,31 +178,39 @@ async def generate_key_process(game, key_count, proxies):
         print(f"Failed to generate key: {error}")
         return None
 
+import random
+import asyncio
+
 async def main():
     _clear()
     _banner()
     log_line()
     proxies = load_proxies()
-    how_much = config.get('key_count',0)
+    how_much = config.get('key_count', 0)
     countdown_delay = config.get('countdown_delay', 10)
+    random_selection = config.get('random_selection', False)
+    selected_game_ids = config.get('selected_games', [])
+    games = config.get('games', {})
 
-    while True:
+    if random_selection:
         available_games = list(games.values())
         sample_size = min(how_much, len(available_games))
-        random_games = random.sample(available_games, sample_size)
+        selected_games = random.sample(available_games, sample_size)
+    else:
+        selected_games = [games[game_id] for game_id in selected_game_ids if game_id in games]
 
-        for game in random_games:
-            print(hju + f"Generating {pth}{how_much} {kng}{game['name']} {hju}promo codes...")
-            keys = await asyncio.gather(*[generate_key_process(game, 1, get_proxy(proxies)) for _ in range(10)])
-            keys = list(filter(None, keys))
+    for game in selected_games:
+        print(hju + f"Generating {pth}{how_much} {kng}{game['name']} {hju}promo codes...")
+        keys = await asyncio.gather(*[generate_key_process(game, 1, get_proxy(proxies)) for _ in range(how_much)])
+        keys = list(filter(None, keys))
 
-            if keys:
-                with open('promo.txt', 'a') as file:
-                    for key in keys:
-                        file.write(f"{key}\n")
+        if keys:
+            with open('E:/newbot/tele/git/hamsterkombat/data/promo.txt', 'a') as file:
+                for key in keys:
+                    file.write(f"{key}\n")
 
-            print(hju + f"Generated {pth}{len(keys)} promo code's for {kng}{game['name']}. {hju}Sleeping...        ")
-            countdown_timer(countdown_delay)
+        print(hju + f"Generated {pth}{len(keys)} promo codes for {kng}{game['name']}. {hju}Sleeping...")
+        countdown_timer(countdown_delay)
 
 if __name__ == "__main__":
     while True:
